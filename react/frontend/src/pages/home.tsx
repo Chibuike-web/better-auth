@@ -14,13 +14,17 @@ export default function Home() {
 	if (!auth) return null;
 
 	const { session, isPending } = auth;
+
 	useEffect(() => {
-		if (isPending) return;
-		if (!session) navigate("/sign-up");
-	}, [session, isPending, navigate]);
+		if (!isPending && !session) {
+			navigate("/sign-in");
+		}
+	}, [isPending, session, navigate]);
 
-	if (isPending) return null;
+	if (isPending)
+		return <div className="min-h-screen grid place-items-center">Authenticating...</div>;
 
+	if (!session) return null;
 	return (
 		<main className="flex flex-col min-h-screen">
 			<Header />
