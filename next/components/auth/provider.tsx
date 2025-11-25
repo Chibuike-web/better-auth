@@ -1,10 +1,10 @@
-import { getSessionData } from "@/api/get-session-data";
+import { getSessionData } from "@/lib/api/get-session-data";
 import { Spinner } from "@/components/ui/spinner";
 import AuthContextProvider from "@/context/auth-context";
 import { redirect } from "next/navigation";
 import { ReactNode, Suspense } from "react";
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default function Auth({ children }: { children: ReactNode }) {
 	return (
 		<Suspense
 			fallback={

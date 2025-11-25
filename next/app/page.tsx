@@ -1,16 +1,16 @@
-import { Cta } from "@/components/cta";
-import { DeveloperSection } from "@/components/developer-section";
-import { Features } from "@/components/features";
-import { Footer } from "@/components/footer";
-import { Hero } from "@/components/hero";
-import { HowItWorks } from "@/components/how-it-works";
-import { Navbar } from "@/components/navbar";
-import { Testimonials } from "@/components/testimonials";
-import RootLayout from "@/lib/root-layout";
+import { Cta } from "@/components/home/cta";
+import { DeveloperSection } from "@/components/home/developer-section";
+import { Features } from "@/components/home/features";
+import { Footer } from "@/components/home/footer";
+import { Hero } from "@/components/home/hero";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { Navbar } from "@/components/home/navbar";
+import { Testimonials } from "@/components/home/testimonials";
+import Auth from "@/components/auth/provider";
 
 export default async function Home() {
 	return (
-		<RootLayout>
+		<Auth>
 			<div className="flex flex-col">
 				<Navbar />
 				<main className="flex-1">
@@ -23,6 +23,6 @@ export default async function Home() {
 				</main>
 				<Footer />
 			</div>
-		</RootLayout>
+		</Auth>
 	);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { signInAction } from "@/actions/sign-in-action";
-import SubmitButton from "@/components/submit-button";
+import SubmitButton from "@/components/home/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
