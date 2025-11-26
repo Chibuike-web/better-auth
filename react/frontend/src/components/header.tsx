@@ -2,7 +2,6 @@ import { useState, useTransition } from "react";
 import { Menu, X } from "lucide-react";
 import Button from "./button";
 import { Link } from "react-router";
-import { useAuth } from "../context/authContext";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -27,14 +26,12 @@ export default function Header() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [pending, startTransition] = useTransition();
 
-	const auth = useAuth();
-	if (!auth) return null;
+	const { data } = authClient.useSession();
 
-	const { user } = auth;
-
+	const user = data?.user;
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<nav className="flex items-center justify-between px-4 py-4 md:px-8">
+			<nav className="flex items-center justify-between max-w-6xl mx-auto px-4 py-4 md:px-8">
 				<div className="flex items-center gap-2">
 					<div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
 						<span className="text-primary-foreground font-bold text-lg">S</span>
@@ -69,7 +66,7 @@ export default function Header() {
 								)}
 							</button>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="rounded-2xl ">
+						<DropdownMenuContent align="end" className="rounded-[12px] ">
 							<DropdownMenuItem className="flex flex-col items-start gap-1">
 								<p className="text-sm font-medium">{user?.name}</p>
 								<p className="text-xs text-muted-foreground">{user?.email}</p>

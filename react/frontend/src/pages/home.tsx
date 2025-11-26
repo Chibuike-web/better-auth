@@ -1,32 +1,24 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import Hero from "../components/hero";
 import Testimonials from "../components/testimonials";
 import Features from "../components/features";
-import { useAuth } from "../context/authContext";
+import { authClient } from "../lib/auth-client";
+import { Link } from "react-router";
 
 export default function Home() {
-	const navigate = useNavigate();
+	const { data } = authClient.useSession();
 
-	const auth = useAuth();
-	if (!auth) return null;
-
-	const { session, isPending } = auth;
-
-	useEffect(() => {
-		if (!isPending && !session) {
-			navigate("/sign-in");
-		}
-	}, [isPending, session, navigate]);
-
-	if (isPending)
-		return <div className="min-h-screen grid place-items-center">Authenticating...</div>;
-
-	if (!session) return null;
 	return (
 		<main className="flex flex-col min-h-screen">
+			{!data?.user.emailVerified && (
+				<div className="bg-yellow-100 text-yellow-800 text-center py-3 font-medium">
+					Your email is not verified.
+					<Link to="/verify-email" className="underline ml-1">
+						Verify now
+					</Link>
+				</div>
+			)}
 			<Header />
 			<Hero />
 			<Features />

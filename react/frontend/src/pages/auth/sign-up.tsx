@@ -90,7 +90,19 @@ export default function SignUp() {
 							setSignUpError(ctx.error.message);
 						},
 						onSuccess: () => {
-							navigate("/");
+							navigate("/verify-email");
+						},
+					}
+				);
+
+				await authClient.sendVerificationEmail(
+					{ email: formData.email, callbackURL: "http://localhost:5173/email-verified" },
+					{
+						onSuccess: (ctx) => {
+							console.log("Verification sent", ctx);
+						},
+						onError: (ctx) => {
+							console.log("Error sending", ctx.error.message);
 						},
 					}
 				);

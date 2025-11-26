@@ -14,6 +14,21 @@ export const auth = betterAuth({
 
 	emailAndPassword: {
 		enabled: true,
+		sendResetPassword: async ({ user, url, token }, request) => {
+			console.log(user);
+			console.log("Password token:", token);
+			console.log("Password URL:", url);
+		},
+		onPasswordReset: async ({ user }, request) => {
+			console.log(`Password for user ${user.email} has been reset.`);
+		},
+	},
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url, token }) => {
+			console.log(user);
+			console.log("Verification token:", token);
+			console.log("Verification URL:", url);
+		},
 	},
 	socialProviders: {
 		google: {
@@ -31,6 +46,6 @@ export const auth = betterAuth({
 
 	session: { expiresIn: 60 * 60 * 24 * 7 },
 	debug: true,
-	trustedOrigins: ["http://localhost:5173"],
+	trustedOrigins: ["http://localhost:5173", "http://localhost:3022"],
 	secret: process.env.BETTER_AUTH_SECRET!,
 });

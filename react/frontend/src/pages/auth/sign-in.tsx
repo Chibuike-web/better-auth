@@ -92,8 +92,8 @@ export default function SignIn() {
 
 	return (
 		<main className="grid place-items-center min-h-screen px-6 xl:px-0 bg-white">
-			<div className="shadow-xl ring ring-gray-100 bg-gray-100 rounded-2xl overflow-hidden my-20">
-				<div className="w-full max-w-[450px] p-6 md:p-10 bg-white rounded-xl ring ring-gray-100">
+			<div className="w-full max-w-[450px] shadow-xl ring ring-gray-100 bg-gray-100 rounded-2xl overflow-hidden my-20">
+				<div className="p-6 md:p-10 bg-white rounded-xl ring ring-gray-100">
 					<span className="text-[20px] font-bold text-center block">BetterAuth</span>
 					<p className="text-[18px] font-semibold text-foreground mt-4 text-center">
 						Sign in to your account
@@ -193,12 +193,18 @@ export default function SignIn() {
 									{errors.password}
 								</p>
 							)}
+							<Link
+								to="/forgot-password"
+								className="text-[14px] hover:underline flex justify-self-end mt-2"
+							>
+								Forgot Password
+							</Link>
 						</div>
 						<Button className="w-full ring-1 ring-foreground bg-foreground/80" disabled={isLoading}>
 							{isLoading ? (
 								<span className="flex items-center gap-2">
 									<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-									Signing up...
+									Signing in...
 								</span>
 							) : (
 								"Continue"
