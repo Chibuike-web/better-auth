@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import Profile from "./profile";
+import { Suspense } from "react";
 
-export function Navbar() {
+export async function Navbar() {
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 md:px-8">
+			<div className="container flex h-16 items-center mx-auto max-w-screen-xl justify-between px-4 md:px-8">
 				<div className="flex items-center gap-2">
 					<Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary">
 						<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -29,7 +33,22 @@ export function Navbar() {
 						Pricing
 					</Link>
 				</nav>
+				<Suspense>
+					<ProfileWrapper />
+				</Suspense>
+			</div>
+		</header>
+	);
+}
 
+const ProfileWrapper = async () => {
+	const data = await auth.api.getSession({ headers: await headers() });
+
+	return (
+		<>
+			{data?.user ? (
+				<Profile />
+			) : (
 				<div className="flex items-center gap-4">
 					<Link
 						href="/login"
@@ -41,7 +60,7 @@ export function Navbar() {
 						Sign Up
 					</Button>
 				</div>
-			</div>
-		</header>
+			)}
+		</>
 	);
-}
+};
