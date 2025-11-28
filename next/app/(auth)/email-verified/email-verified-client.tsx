@@ -31,7 +31,12 @@ const InvalidToken = () => {
 						onClick={() => {
 							startTransition(async () => {
 								await authClient.sendVerificationEmail(
-									{ email, callbackURL: "http://localhost:3000/email-verified" },
+									{
+										email,
+										callbackURL: `http://localhost:3000/email-verified?email=${encodeURIComponent(
+											email
+										)}`,
+									},
 									{
 										onSuccess: (ctx) => {
 											console.log("Verification sent", ctx);
