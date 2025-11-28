@@ -1,10 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import Profile from "./profile";
-import { Suspense } from "react";
+import ProfileWrapper from "./profile";
 
 export async function Navbar() {
 	return (
@@ -33,38 +29,9 @@ export async function Navbar() {
 						Pricing
 					</Link>
 				</nav>
-				<Suspense
-					fallback={
-						<span className="hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-white font-semibold overflow-hidden" />
-					}
-				>
-					<ProfileWrapper />
-				</Suspense>
+
+				<ProfileWrapper />
 			</div>
 		</header>
 	);
 }
-
-const ProfileWrapper = async () => {
-	const data = await auth.api.getSession({ headers: await headers() });
-
-	return (
-		<>
-			{data?.user ? (
-				<Profile />
-			) : (
-				<div className="flex items-center gap-4">
-					<Link
-						href="/login"
-						className="text-sm font-medium text-muted-foreground hover:text-foreground hidden sm:block"
-					>
-						Sign In
-					</Link>
-					<Button size="sm" className="rounded-full px-6">
-						Sign Up
-					</Button>
-				</div>
-			)}
-		</>
-	);
-};

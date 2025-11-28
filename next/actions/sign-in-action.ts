@@ -27,7 +27,7 @@ export async function signInAction(prevState: any, formData: FormData) {
 	} catch (error) {
 		return {
 			...prevState,
-			error: error instanceof Error ? error.message : "Something went wrong",
+			error: "Something went wrong",
 			email: data.email,
 			password: data.password,
 		};

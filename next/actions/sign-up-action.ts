@@ -30,7 +30,27 @@ export async function signUpAction(prevState: any, formData: FormData) {
 	} catch (error) {
 		return {
 			...prevState,
-			error: error instanceof Error ? error.message : "Something went wrong",
+			error: "Something went wrong",
+			firstName: data.firstName,
+			lastName: data.lastName,
+			email: data.email,
+			password: data.password,
+		};
+	}
+
+	try {
+		await auth.api.sendVerificationEmail({
+			body: {
+				email: parsed.data.email,
+				callbackURL: `http://localhost:3000/email-verified?email=${encodeURIComponent(
+					parsed.data.email
+				)}`,
+			},
+		});
+	} catch (error) {
+		return {
+			...prevState,
+			error: "Something went wrong",
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email,

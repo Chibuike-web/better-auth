@@ -17,8 +17,18 @@ export const auth = betterAuth({
 		schema,
 	}),
 	emailAndPassword: { enabled: true },
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url, token }) => {
+			console.log(user);
+			console.log("Verification token:", token);
+			console.log("Verification URL:", url);
+		},
+	},
 	session: { expiresIn: 60 * 60 * 24 * 7 },
 	debug: true,
+	trustedOrigins: ["http://localhost:3000"],
+
 	secret: process.env.BETTER_AUTH_SECRET!,
+	baseURL: "http://localhost:3000",
 	plugins: [nextCookies()],
 });

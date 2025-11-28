@@ -1,5 +1,4 @@
-import { ArrowRight, FileText } from "lucide-react";
-import Image from "next/image";
+import { FileText } from "lucide-react";
 
 export function HowItWorks() {
 	return (

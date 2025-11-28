@@ -88,7 +88,9 @@ export default function SignUpClient() {
 						defaultValue={state.password}
 					/>
 				</div>
-				<SubmitButton loadingText="Signing up...">Continue</SubmitButton>
+				<SubmitButton onClick={() => setError("")} loadingText="Signing up...">
+					Continue
+				</SubmitButton>
 			</form>
 		</>
 	);
