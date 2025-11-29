@@ -1,7 +1,10 @@
 "use server";
 
-import { auth } from "@/lib/auth";
+import { user } from "@/db/schema";
+import { auth, db } from "@/lib/auth";
 import { authSchema } from "@/lib/schemas/auth-schema";
+import { APIError } from "better-auth";
+import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export async function signUpAction(prevState: any, formData: FormData) {
@@ -28,9 +31,14 @@ export async function signUpAction(prevState: any, formData: FormData) {
 			},
 		});
 	} catch (error) {
+		const existing = await db.select().from(user).where(eq(user.email, parsed.data.email)).limit(1);
+
+		if (existing.length > 0) {
+			redirect("/");
+		}
 		return {
 			...prevState,
-			error: "Something went wrong",
+			error: error instanceof APIError ? error.message : "Something went wrong",
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email,
@@ -42,7 +50,7 @@ export async function signUpAction(prevState: any, formData: FormData) {
 		await auth.api.sendVerificationEmail({
 			body: {
 				email: parsed.data.email,
-				callbackURL: `http://localhost:3000/email-verified?email=${encodeURIComponent(
+				callbackURL: `${process.env.NEXT_PUBLIC_URL}/email-verified?email=${encodeURIComponent(
 					parsed.data.email
 				)}`,
 			},
@@ -50,7 +58,7 @@ export async function signUpAction(prevState: any, formData: FormData) {
 	} catch (error) {
 		return {
 			...prevState,
-			error: "Something went wrong",
+			error: error instanceof APIError ? error.message : "Something went wrong",
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email,

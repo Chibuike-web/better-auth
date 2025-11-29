@@ -5,6 +5,8 @@ import { neon } from "@neondatabase/serverless";
 import { config } from "dotenv";
 import { nextCookies } from "better-auth/next-js";
 import * as schema from "@/db/schema";
+import { Resend } from "resend";
+import { sendEmail } from "./send-email";
 
 config({ path: ".env.local" });
 
@@ -20,15 +22,15 @@ export const auth = betterAuth({
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url, token }) => {
 			console.log(user);
-			console.log("Verification token:", token);
 			console.log("Verification URL:", url);
+			const data = await sendEmail(user.email, url);
+			console.log(data);
 		},
 	},
 	session: { expiresIn: 60 * 60 * 24 * 7 },
 	debug: true,
-	trustedOrigins: ["http://localhost:3000"],
-
+	trustedOrigins: [`${process.env.NEXT_PUBLIC_URL}`],
 	secret: process.env.BETTER_AUTH_SECRET!,
-	baseURL: "http://localhost:3000",
+	baseURL: process.env.NEXT_PUBLIC_URL,
 	plugins: [nextCookies()],
 });

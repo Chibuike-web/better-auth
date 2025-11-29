@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { authSchema } from "@/lib/schemas/auth-schema";
+import { APIError } from "better-auth";
 import { redirect } from "next/navigation";
 
 export async function signInAction(prevState: any, formData: FormData) {
@@ -27,7 +28,7 @@ export async function signInAction(prevState: any, formData: FormData) {
 	} catch (error) {
 		return {
 			...prevState,
-			error: "Something went wrong",
+			error: error instanceof APIError ? error.message : "Something went wrong",
 			email: data.email,
 			password: data.password,
 		};

@@ -33,7 +33,7 @@ const InvalidToken = () => {
 								await authClient.sendVerificationEmail(
 									{
 										email,
-										callbackURL: `http://localhost:3000/email-verified?email=${encodeURIComponent(
+										callbackURL: `${process.env.NEXT_PUBLIC_URL}/email-verified?email=${encodeURIComponent(
 											email
 										)}`,
 									},

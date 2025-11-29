@@ -7,13 +7,16 @@ import { HowItWorks } from "@/components/home/how-it-works";
 import { Navbar } from "@/components/home/navbar";
 import { Testimonials } from "@/components/home/testimonials";
 import VerifiedBanner from "@/components/home/verified-banner";
+import { Suspense } from "react";
 
 export default function Home() {
 	return (
 		<div className="flex flex-col">
 			<Navbar />
 			<main className="flex-1">
-				<VerifiedBanner />
+				<Suspense>
+					<VerifiedBanner />
+				</Suspense>
 				<Hero />
 				<Features />
 				<HowItWorks />

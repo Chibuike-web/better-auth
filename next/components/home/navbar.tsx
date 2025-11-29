@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Activity } from "lucide-react";
-import ProfileWrapper from "./profile";
+import { Suspense } from "react";
+import Profile from "./profile";
 
 export async function Navbar() {
 	return (
@@ -14,7 +15,6 @@ export async function Navbar() {
 						<span>MediBridge</span>
 					</Link>
 				</div>
-
 				<nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
 					<Link href="#features" className="hover:text-foreground transition-colors">
 						Features
@@ -29,8 +29,13 @@ export async function Navbar() {
 						Pricing
 					</Link>
 				</nav>
-
-				<ProfileWrapper />
+				<Suspense
+					fallback={
+						<span className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-white font-semibold overflow-hidden" />
+					}
+				>
+					<Profile />
+				</Suspense>
 			</div>
 		</header>
 	);

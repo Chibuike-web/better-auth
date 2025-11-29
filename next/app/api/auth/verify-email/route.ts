@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { APIError } from "better-auth";
 import { NextResponse } from "next/server";
 
-const base = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const base = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
 export async function GET(req: Request) {
 	const { searchParams } = new URL(req.url);
