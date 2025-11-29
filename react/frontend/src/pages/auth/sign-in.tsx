@@ -11,6 +11,8 @@ import GoogleIcon from "../../icons/google-icon";
 import GithubIcon from "../../icons/github-icon";
 import useIsPasswordVisible from "../../hooks/useIsPasswordVisible";
 
+const URL = import.meta.env.VITE_API_FRONTEND_URL;
+
 export default function SignIn() {
 	const [errors, setErrors] = useState<Record<string, string>>({
 		email: "",
@@ -108,7 +110,7 @@ export default function SignIn() {
 							onClick={() =>
 								authClient.signIn.social({
 									provider: "google",
-									callbackURL: "http://localhost:5173",
+									callbackURL: `${URL}`,
 								})
 							}
 						>

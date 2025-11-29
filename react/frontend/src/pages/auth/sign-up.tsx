@@ -12,6 +12,8 @@ import GoogleIcon from "../../icons/google-icon";
 import GithubIcon from "../../icons/github-icon";
 import useIsPasswordVisible from "../../hooks/useIsPasswordVisible";
 
+const URL = import.meta.env.VITE_API_FRONTEND_URL;
+
 export default function SignUp() {
 	const [errors, setErrors] = useState<Record<string, string>>({
 		firstName: "",
@@ -96,7 +98,10 @@ export default function SignUp() {
 				);
 
 				await authClient.sendVerificationEmail(
-					{ email: formData.email, callbackURL: "http://localhost:5173/email-verified" },
+					{
+						email: formData.email,
+						callbackURL: `${URL}/email-verified?email=${encodeURIComponent(formData.email)}`,
+					},
 					{
 						onSuccess: (ctx) => {
 							console.log("Verification sent", ctx);

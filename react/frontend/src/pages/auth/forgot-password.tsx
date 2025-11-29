@@ -7,6 +7,8 @@ import Label from "../../components/label";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
+const URL = import.meta.env.VITE_API_FRONTEND_URL;
+
 export default function ForgotPassword() {
 	const [email, setEmail] = useState("");
 	const [error, setError] = useState("");
@@ -27,7 +29,7 @@ export default function ForgotPassword() {
 			try {
 				await authClient.requestPasswordReset({
 					email,
-					redirectTo: "http://localhost:5173/reset-password",
+					redirectTo: `${URL}/reset-password`,
 				});
 				setSent(true);
 			} catch (err) {

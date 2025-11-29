@@ -1,5 +1,4 @@
-const URL = `http://localhost:3022/api/auth/verify-email?token=eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVidWJlQGdtYWlsLmNvbSIsImlhdCI6MTc2NDE2MTc0MywiZXhwIjoxNzY0MTY1MzQzfQ.4OMcgDYcDU6CmAM5YZttm6k7W_WSgCm8dSVU9j7StyM&callbackURL=http://localhost:5173/email-verified`;
-
+const URL = "";
 export default function VerifyEmail() {
 	return (
 		<main className="min-h-screen flex items-center justify-center bg-white px-6">

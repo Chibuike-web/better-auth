@@ -83,7 +83,6 @@ export default function Header() {
 									startTransition(async () => {
 										try {
 											await authClient.signOut();
-											window.location.href = "/sign-in";
 										} catch (error) {
 											console.log(error);
 										}
