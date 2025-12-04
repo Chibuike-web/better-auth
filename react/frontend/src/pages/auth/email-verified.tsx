@@ -1,4 +1,4 @@
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Link } from "react-router";
 import { useSearchParams } from "react-router";
 import { authClient } from "../../lib/auth-client";
@@ -8,11 +8,17 @@ const URL = import.meta.env.VITE_API_FRONTEND_URL;
 export default function EmailVerified() {
 	const [searchParams] = useSearchParams();
 	const error = searchParams.get("error");
-	return <>{error === "invalid_token" ? <InvalidToken /> : <ValidToken />}</>;
+	console.log(error);
+	return (
+		<>
+			{error === "token_expired" || error === "invalid_token" ? <InvalidToken /> : <ValidToken />}
+		</>
+	);
 }
 
 const InvalidToken = () => {
 	const [isPending, startTransition] = useTransition();
+	const [link, setLink] = useState(false);
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get("email");
 	if (!email) return;
@@ -27,14 +33,20 @@ const InvalidToken = () => {
 
 				<div className="mt-8">
 					<button
-						className="inline-block w-full py-3 rounded-md bg-foreground text-white font-medium"
+						disabled={isPending || link}
+						className="inline-block w-full py-3 rounded-md bg-foreground text-white font-medium disabled:opacity-50"
 						onClick={() => {
+							if (link) return;
 							startTransition(async () => {
 								await authClient.sendVerificationEmail(
-									{ email, callbackURL: `${URL}/email-verified` },
+									{
+										email,
+										callbackURL: `${URL}/email-verified?email=${encodeURIComponent(email)}`,
+									},
 									{
 										onSuccess: (ctx) => {
 											console.log("Verification sent", ctx);
+											setLink(true);
 										},
 										onError: (ctx) => {
 											console.log("Error sending", ctx.error.message);
@@ -44,7 +56,7 @@ const InvalidToken = () => {
 							});
 						}}
 					>
-						{isPending ? "Sending..." : "Resend verification email"}
+						{link ? "Link sent" : isPending ? "Sending..." : "Resend verification email"}
 					</button>
 				</div>
 

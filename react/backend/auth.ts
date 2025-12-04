@@ -33,6 +33,7 @@ export const auth = betterAuth({
 			const data = await sendEmail(user.email, url);
 			console.log(data);
 		},
+		expiresIn: 60 * 5,
 	},
 	socialProviders: {
 		google: {

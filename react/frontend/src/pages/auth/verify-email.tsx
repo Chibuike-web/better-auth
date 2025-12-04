@@ -1,4 +1,5 @@
-const URL = "";
+const URL = "https://mail.google.com/mail/u/0/#inbox";
+
 export default function VerifyEmail() {
 	return (
 		<main className="min-h-screen flex items-center justify-center bg-white px-6">

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import { auth } from "../auth";

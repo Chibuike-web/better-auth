@@ -1,7 +1,6 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { Link } from "react-router";
 import { authClient } from "../../lib/auth-client";
-
 import { X } from "lucide-react";
 import Label from "../../components/label";
 import Input from "../../components/input";
