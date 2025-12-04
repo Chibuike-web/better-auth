@@ -1,15 +1,27 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { cacheLife } from "next/cache";
+import { cookies } from "next/headers";
+import { auth } from "../auth";
 
 export async function getSessionData() {
-	const h = await headers();
-	return cachedSession(h);
+	"use cache: private";
+
+	const cookieStore = await cookies();
+	const token = cookieStore.get("better-auth.session_token")?.value ?? "";
+
+	return cachedSession(token);
 }
 
-async function cachedSession(h: Headers) {
+async function cachedSession(token: string) {
 	"use cache";
-	const session = await auth.api.getSession({
-		headers: h,
+
+	if (token) cacheLife("weeks");
+	else cacheLife("seconds");
+
+	const cookieHeader = `better-auth.session_token=${token}`;
+
+	return await auth.api.getSession({
+		headers: {
+			cookie: cookieHeader,
+		},
 	});
-	return session;
 }

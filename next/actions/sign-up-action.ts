@@ -67,5 +67,5 @@ export async function signUpAction(prevState: any, formData: FormData) {
 	}
 
 	console.log("Sign up successfull");
-	redirect("/");
+	redirect("/verify-email");
 }

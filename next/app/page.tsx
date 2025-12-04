@@ -1,3 +1,4 @@
+import ClientOnly from "@/components/client-only";
 import { Cta } from "@/components/home/cta";
 import { DeveloperSection } from "@/components/home/developer-section";
 import { Features } from "@/components/home/features";

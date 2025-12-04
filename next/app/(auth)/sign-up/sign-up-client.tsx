@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 import { signUpAction } from "@/actions/sign-up-action";
 import { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const defaultState = {
 	success: false,
@@ -20,7 +19,6 @@ const defaultState = {
 export default function SignUpClient() {
 	const [state, formAction] = useActionState(signUpAction, defaultState);
 	const [error, setError] = useState("");
-	const router = useRouter();
 
 	useEffect(() => {
 		if (state.error) {

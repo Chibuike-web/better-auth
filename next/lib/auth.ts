@@ -5,7 +5,6 @@ import { neon } from "@neondatabase/serverless";
 import { config } from "dotenv";
 import { nextCookies } from "better-auth/next-js";
 import * as schema from "@/db/schema";
-import { Resend } from "resend";
 import { sendEmail } from "./send-email";
 
 config({ path: ".env.local" });
@@ -26,6 +25,7 @@ export const auth = betterAuth({
 			const data = await sendEmail(user.email, url);
 			console.log(data);
 		},
+		expiresIn: 60 * 5,
 	},
 	session: { expiresIn: 60 * 60 * 24 * 7 },
 	debug: true,

@@ -1,18 +1,24 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
 
 export default function EmailVerifiedClient() {
 	const searchParams = useSearchParams();
 	const error = searchParams.get("error");
-	return <>{error === "invalid_token" ? <InvalidToken /> : <ValidToken />}</>;
+	return (
+		<>
+			{error === "invalid_token" || error === "token_expired" ? <InvalidToken /> : <ValidToken />}
+		</>
+	);
 }
 
 const InvalidToken = () => {
 	const [isPending, startTransition] = useTransition();
+	const [link, setLink] = useState(false);
 	const searchParams = useSearchParams();
 	const email = searchParams.get("email");
 	if (!email) return;
@@ -26,9 +32,11 @@ const InvalidToken = () => {
 				</p>
 
 				<div className="mt-8">
-					<button
-						className="inline-block w-full py-3 rounded-md bg-foreground text-white font-medium"
+					<Button
+						disabled={isPending || link}
+						className="inline-block w-full rounded-md bg-foreground text-white font-medium h-10"
 						onClick={() => {
+							if (link) return;
 							startTransition(async () => {
 								await authClient.sendVerificationEmail(
 									{
@@ -40,6 +48,7 @@ const InvalidToken = () => {
 									{
 										onSuccess: (ctx) => {
 											console.log("Verification sent", ctx);
+											setLink(true);
 										},
 										onError: (ctx) => {
 											console.log("Error sending", ctx.error.message);
@@ -49,8 +58,8 @@ const InvalidToken = () => {
 							});
 						}}
 					>
-						{isPending ? "Sending..." : "Resend verification email"}
-					</button>
+						{link ? "Link sent" : isPending ? "Sending..." : "Resend verification email"}
+					</Button>
 				</div>
 
 				<p className="text-sm text-foreground/40 mt-4">If the issue continues, contact support.</p>

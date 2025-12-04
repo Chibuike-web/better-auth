@@ -1,11 +1,11 @@
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+
 import ClientProfile from "./client-profile";
+import { getSessionData } from "@/lib/api/get-session-data";
 
 export default async function Profile() {
-	const data = await auth.api.getSession({ headers: await headers() });
+	const data = await getSessionData();
 
 	return (
 		<>

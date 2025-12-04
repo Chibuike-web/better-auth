@@ -4,7 +4,6 @@ import Link from "next/link";
 
 export default async function VerifiedBanner() {
 	const data = await auth.api.getSession({ headers: await headers() });
-
 	return (
 		<>
 			{data && !data?.user.emailVerified && (
