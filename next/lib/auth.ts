@@ -17,7 +17,20 @@ export const auth = betterAuth({
 		provider: "pg",
 		schema,
 	}),
-	emailAndPassword: { enabled: true },
+	emailAndPassword: {
+		enabled: true,
+		sendResetPassword: async ({ user, url, token }, request) => {
+			console.log(user);
+			console.log("Password token:", token);
+			console.log("Password URL:", url);
+			const data = await sendEmail(user.email, url);
+			console.log(data);
+		},
+		onPasswordReset: async ({ user }, request) => {
+			console.log(`Password for user ${user.email} has been reset.`);
+		},
+		resetPasswordTokenExpiresIn: 60 * 5,
+	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url, token }) => {
 			console.log(user);

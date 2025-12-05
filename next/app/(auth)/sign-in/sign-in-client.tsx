@@ -4,7 +4,9 @@ import { signInAction } from "@/actions/sign-in-action";
 import SubmitButton from "@/components/home/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { X } from "lucide-react";
+import useIsPasswordVisible from "@/lib/hooks/useIsPasswordVisible";
+import { Eye, EyeOff, X } from "lucide-react";
+import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
 
 const defaultState = {
@@ -15,6 +17,7 @@ const defaultState = {
 
 export default function SignInClient() {
 	const [state, formAction] = useActionState(signInAction, defaultState);
+	const { isPasswordVisible, setIsPasswordVisible } = useIsPasswordVisible();
 	const [error, setError] = useState("");
 
 	useEffect(() => {
@@ -46,17 +49,39 @@ export default function SignInClient() {
 						defaultValue={state.email}
 					/>
 				</div>
-				<div className="mb-10">
+
+				<div className="mb-10 ">
 					<Label htmlFor="password" className="flex text-[16px] items-end justify-between mb-2">
 						Password
 					</Label>
-					<Input
-						type="password"
-						placeholder="Enter your password"
-						id="password"
-						name="password"
-						defaultValue={state.password}
-					/>
+					<div className="relative">
+						<Input
+							type={isPasswordVisible ? "text" : "password"}
+							placeholder="Enter your password"
+							id="password"
+							name="password"
+							defaultValue={state.password}
+						/>
+						<button
+							type="button"
+							aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+							className="absolute right-4 top-1/2 -translate-y-1/2"
+							onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+						>
+							{isPasswordVisible ? (
+								<EyeOff className="size-[20px] text-gray-600" />
+							) : (
+								<Eye className="size-[20px] text-gray-600" />
+							)}
+						</button>
+					</div>
+
+					<Link
+						href="/forgot-password"
+						className="text-[14px] hover:underline flex justify-self-end mt-2"
+					>
+						Forgot Password
+					</Link>
 				</div>
 				<SubmitButton onClick={() => setError("")} loadingText="Signing in...">
 					Continue
