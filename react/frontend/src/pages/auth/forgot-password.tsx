@@ -11,13 +11,13 @@ const URL = import.meta.env.VITE_API_FRONTEND_URL;
 export default function ForgotPassword() {
 	const [email, setEmail] = useState("");
 	const [error, setError] = useState("");
-	const [sent, setSent] = useState(false);
+	const [sent, setSent] = useState("");
 	const [isPending, startTransition] = useTransition();
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		setError("");
-		setSent(false);
+		setSent("");
 
 		if (!email.trim()) {
 			setError("Email is required");
@@ -26,11 +26,11 @@ export default function ForgotPassword() {
 
 		startTransition(async () => {
 			try {
-				await authClient.requestPasswordReset({
+				const res = await authClient.requestPasswordReset({
 					email,
 					redirectTo: `${URL}/reset-password`,
 				});
-				setSent(true);
+				setSent(res.data?.message ?? "");
 			} catch (err) {
 				setError("Unable to send reset link");
 			}
@@ -60,7 +60,7 @@ export default function ForgotPassword() {
 
 					{sent && (
 						<div className="px-3 py-2 my-4 bg-green-100 text-green-700 text-sm font-medium rounded-md border border-green-200 shadow-sm">
-							Reset link sent.
+							{sent}
 						</div>
 					)}
 

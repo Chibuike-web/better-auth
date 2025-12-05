@@ -25,6 +25,7 @@ export const auth = betterAuth({
 		onPasswordReset: async ({ user }, request) => {
 			console.log(`Password for user ${user.email} has been reset.`);
 		},
+		resetPasswordTokenExpiresIn: 60 * 5,
 	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url, token }) => {

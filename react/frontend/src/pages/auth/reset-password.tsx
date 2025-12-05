@@ -1,5 +1,5 @@
 import { useState, useTransition, type FormEvent } from "react";
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams, useNavigate, Link } from "react-router";
 import { authClient } from "../../lib/auth-client";
 import Button from "../../components/button";
 import Input from "../../components/input";
@@ -7,10 +7,11 @@ import Label from "../../components/label";
 import { X, Eye, EyeOff } from "lucide-react";
 
 export default function ResetPassword() {
-	const [params] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
 
-	const token = params.get("token");
+	const token = searchParams.get("token");
+	const errorCode = searchParams.get("error");
 
 	const [password, setPassword] = useState("");
 	const [confirm, setConfirm] = useState("");
@@ -22,6 +23,9 @@ export default function ResetPassword() {
 	const [visible, setVisible] = useState(false);
 	const [visibleConfirm, setVisibleConfirm] = useState(false);
 
+	if (errorCode === "INVALID_TOKEN") {
+		return <InvalidTokenUI />;
+	}
 	if (!token) {
 		return (
 			<main className="grid place-items-center min-h-screen bg-white px-6">
@@ -162,6 +166,36 @@ export default function ResetPassword() {
 					<a href="/sign-in" className="font-medium">
 						Sign in
 					</a>
+				</div>
+			</div>
+		</main>
+	);
+}
+
+function InvalidTokenUI() {
+	const navigate = useNavigate();
+	return (
+		<main className="grid place-items-center min-h-screen bg-white px-6">
+			<div className=" w-full max-w-[450px] rounded-2xl overflow-hidden my-20">
+				<div className="flex flex-col items-center">
+					<h1 className="text-2xl font-semibold text-red-500"> Invalid Reset Link</h1>
+
+					<p className="text-foreground/70 mt-2 text-center">
+						This password reset link is invalid or has expired.
+					</p>
+
+					<div className="w-full mt-6">
+						<Button className="w-full h-11" onClick={() => navigate("/forgot-password")}>
+							Request new reset link
+						</Button>
+
+						<Link
+							to="/sign-in"
+							className="inline-block text-foreground font-medium mt-6 text-center w-full"
+						>
+							Back to sign in
+						</Link>
+					</div>
 				</div>
 			</div>
 		</main>
